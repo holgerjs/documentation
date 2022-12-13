@@ -112,7 +112,7 @@ Charges are based on a combination of the componets below. See the [Azure Bastio
 | Criteria  	    | Jump Host  	                                            | AWS Systems Manager Session Manager | Azure Bastion  	|
 |---                |---	                                                    |---	                              | ---             |
 | Service Model     | IaaS	                                                    | PaaS                                | PaaS            |
-| Exposure       	| Internal or External                                      | Internal or External                | External          |
+| Exposure       	| Internal or External                                      | External                | External          |
 | Pricing           | Charges apply for Compute, Storage and Network Traffic    | Network egress traffic is charged as well as access to non-EC2 nodes (advanced access tiers).           | Charged on an hourly basis per instance and for network traffic    	            |
 | Can be accessed through Private Endpoints? | not required | Yes (AWS PrivateLink) | No |
 | Subnet Requirements               | Minimum /29              |None (unless AWS PrivateLink is used)                          | Minimum /26   |
