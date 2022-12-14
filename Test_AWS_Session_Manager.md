@@ -353,7 +353,7 @@ Accessing Windows through RDP requires Port Forwarding from the local host to AW
 
 The first part should be straightforward and probably does not require further documentation.
 
-For the second part, loggin to the Windows Shell is required through Session Manager- Logging to the Windows host is exactly the same as for Linux and the logged-in user is again the aforementioned `ssm-user`.
+For the second part, logging in to the Windows Shell is required through Session Manager. The login to the Windows host is exactly the same as for Linux and the logged-in user is again the aforementioned `ssm-user`.
 
 ![Logged in to Windows](images/session_manager_04.png)
 
@@ -422,7 +422,7 @@ Once done with testing, above resources could be removed by running `terraform d
 ## Summary
 
 For testing AWS Session Manager, a VPC was created without any internet connectivity (by leaving out the Internet Gateways). Then the VPC Endpoints required for AWS Systems Manager Session Manager were created and two EC2 instances for testing were deployed.
-Afterwards, successful logins (RDP and SSH) were possible to the EC2 instances through Session Manager.
+Afterwards, successful logins (RDP and SSH) were possible to the EC2 instances through Session Manager. Checking the network connections revealed that only internal network connections against the VPC Endpoints of AWS Session Manager were established.
 
 ## References
 
