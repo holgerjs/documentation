@@ -222,7 +222,7 @@ resource "aws_vpc_endpoint" "s3_gateway_endpoint" {
 
 This finishes the networking part. The full terraform configuration can be found within the [network.tf](network.tf) file.
 
-## Create EC2 Instances for Testing
+## Creating EC2 Instances for Testing
 
 For testing purposes one Windows and one Linux instance will be deployed so that both, SSH and RDP access through AWS Session Manager can be tested. Once both instances were created, the following resources are deployed:
 
@@ -415,7 +415,7 @@ Similar to the network connections that were seen on the Linux host, only intern
 
 ![Windows Network Connections to Session Manager](images/session_manager_05.png)
 
-## Cleanup
+## Cleaning Up
 
 Once done with testing, above resources could be removed by running `terraform destroy`.
 
