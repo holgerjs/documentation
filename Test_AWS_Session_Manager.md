@@ -1,4 +1,4 @@
-# Testing AWS Session Manager with VPC Interface Endpoints
+# Testing AWS Session Manager with VPC Endpoints
 
 Based on the AWS documentation, AWS Session Manager can be used to establish interactive sessions against EC2 instances that are fully private - without any outbound or inbound internet traffic required or even allowed.
 In order for this to work VPC Interface Endpoints for AWS Systems Manager Session Manager are required, since the AWS Systems Manager agents need to communicate with AWS Systems Manager.
