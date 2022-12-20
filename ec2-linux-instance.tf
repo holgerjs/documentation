@@ -7,7 +7,7 @@ resource "aws_network_interface" "ubuntu-nic" {
 
     tags = {
       Name = "ubuntu-primary-nic"
-      owner = "hjs"
+      owner = "me"
     }
 }
 
@@ -25,6 +25,6 @@ resource "aws_instance" "ubuntu_linux" {
     tags = {
         Name = "test-ubn-01"
         OS = "Ubuntu16.04LTS"
-        owner = "hjs"
+        owner = "me"
     }
 }

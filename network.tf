@@ -6,7 +6,7 @@ resource "aws_vpc" "main_vpc" {
     enable_dns_support = true
     tags = {
         Name = "main-vpc"
-        owner = "hjs"
+        owner = "me"
     }
 }
 
@@ -17,7 +17,7 @@ resource "aws_subnet" "main_public_subnet" {
     cidr_block = "10.40.2.0/25"
     tags = {
         Name = "public-subnet-eu-central-1a"
-        owner = "hjs"
+        owner = "me"
     }
 }
 
@@ -27,7 +27,7 @@ resource "aws_subnet" "main_private_subnet" {
     cidr_block = "10.40.2.128/25"
     tags = {
         Name = "private-subnet-eu-central-1a"
-        owner = "hjs"
+        owner = "me"
     }
 }
 
@@ -36,7 +36,7 @@ resource "aws_route_table" "main_public_rt" {
     vpc_id = aws_vpc.main_vpc.id
     tags = {
         Name = "public-rt"
-        owner = "hjs"
+        owner = "me"
     }
 }
 
@@ -44,7 +44,7 @@ resource "aws_route_table" "main_private_rt" {
     vpc_id = aws_vpc.main_vpc.id
     tags = {
         Name = "private-rt"
-        owner = "hjs"
+        owner = "me"
     }
 }
 
@@ -82,7 +82,7 @@ resource "aws_security_group" "allow_tls_inside_vpc" {
 
     tags = {
         Name = "allow_tls"
-        owner = "hjs"
+        owner = "me"
     }
 }
 
@@ -102,7 +102,7 @@ resource "aws_vpc_endpoint" "ssm_interface_endpoint" {
     ]
 
     tags = {
-        owner = "hjs"
+        owner = "me"
     }
 }
 
@@ -121,7 +121,7 @@ resource "aws_vpc_endpoint" "ec2messages_interface_endpoint" {
     ]
     
     tags = {
-        owner = "hjs"
+        owner = "me"
     }
 }
 
@@ -140,7 +140,7 @@ resource "aws_vpc_endpoint" "ec2_interface_endpoint" {
     ]
 
     tags = {
-        owner = "hjs"
+        owner = "me"
     }
 }
 
@@ -159,7 +159,7 @@ resource "aws_vpc_endpoint" "ssmmessages_interface_endpoint" {
     ]
     
     tags = {
-        owner = "hjs"
+        owner = "me"
     }
 }
 
@@ -171,6 +171,6 @@ resource "aws_vpc_endpoint" "s3_gateway_endpoint" {
     vpc_endpoint_type = "Gateway"
 
     tags = {
-        owner = "hjs"
+        owner = "me"
     }
 }

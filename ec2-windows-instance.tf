@@ -7,7 +7,7 @@ resource "aws_network_interface" "win2022-nic" {
 
     tags = {
       Name = "win2022-primary-nic"
-      owner = "hjs"
+      owner = "me"
     }
 }
 
@@ -25,6 +25,6 @@ resource "aws_instance" "windows-2022" {
     tags = {
         Name = "test-win-01"
         OS = "WindowsServer2022"
-        owner = "hjs"
+        owner = "me"
     }
 }
