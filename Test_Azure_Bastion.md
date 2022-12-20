@@ -530,8 +530,9 @@ With these configuraton changes, the deployment can be executed. Once the deploy
 
 ```azurecli
 $ az network bastion ssh --name bastion-host --resource-group bastion-test-rg --target-resource-id /subscriptions/{subscription-id}/resourceGroups/bastion-test-rg/providers/Microsoft.Compute/virtualMachines/vm-ubn-01 --auth-type ssh-key --username ubn-azureuser --ssh-key $(az keyvault secret show --name ubn-ssh-key --vault-name kv-bastion-test-001 --query "value" --output tsv > ssh_key.pem; echo ".\ssh_key.pem")
+```
 
-
+```azurecli
 Command group 'network bastion' is in preview and under development. Reference and support levels: https://aka.ms/CLI_refstatus
 Welcome to Ubuntu 18.04.6 LTS (GNU/Linux 5.4.0-1098-azure x86_64)
 
