@@ -1,6 +1,10 @@
 # Test Azure Bastion
 
-The steps in this document can be used to create a test environment for Azure Bastion and test the corresponding functionality.
+## Objectives
+
+The steps in this document can be used to create a test environment for Azure Bastion and test the corresponding functionality by accessing a Windows and a Linux VM.
+
+**The code samples are solely for testing and learning purposes and should not be used in production environments.**
 
 Objectives:
 
@@ -10,12 +14,9 @@ Objectives:
 Extra:
 - Store private key inside a key vault
 
+The terraform code samples [can be found here](https://github.com/holgerjs/documentation/tree/main/terraform/azure).
+
 ## Prepare the Provider and Create the Resource Group
-
-Provider and Resource Group terraform files are here:
-
-- [provider.tf](terraform/azure/provider.tf)
-- [resourcegroup.tf](terraform/azure/resourcegroup.tf)
 
 As the very first step, the terraform providers need to be added and the destination resource group needs to be created.
 
@@ -50,10 +51,6 @@ resource "azurerm_resource_group" "rg" {
 ```
 
 ## Create the Networking Configuration
-
-The terraform files for the networking configuration can be seen here:
-
-- [network.tf](terraform/azure/network.tf)
 
 ### Virtual Network
 
@@ -190,11 +187,6 @@ resource "azurerm_subnet_network_security_group_association" "nsg_vm_subnet_asso
 ## Virtual Machines
 
 In order to be able to test RDP as well as SSH sessions, one Linux (Ubuntu) and one Windows (Windows Server 2022) are deployed.
-The terraform files for both VMs are:
-
-- [ssh_key.tf](terraform/azure/ssh_key.tf)
-- [vm_linux.tf](terraform/azure/vm_linux.tf)
-- [vm_windows.tf](terraform/azure/vm_windows.tf)
 
 ### Linux Virtual Machine (Ubuntu)
 
@@ -302,9 +294,7 @@ resource "azurerm_windows_virtual_machine" "vm-win-01" {
 
 ## Configure Azure Bastion
 
-As the very last step, Azure Bastion can be deployed. The terraform file can be found her:
-
-- [bastion.tf](terraform/azure/bastion.tf)
+As the very last step, Azure Bastion can be deployed.
  
 For testing purposes the `Standard` SKU is used so that tunneling capabilities for using native clients are provided. The core capability of this SKU is the ability to scale up to 50 scale units - however, for this testing scenario, this is not relevant and only the minimum of 2 scale units should be configured.
 Other than that, Azure Bastion requires a Public IP address against which the Azure Portal will connect incoming requests. For a full diagram of the connectivity flow for Azure Bastion, see the [Azure Bastion Networking documentation](https://learn.microsoft.com/en-gb/azure/bastion/connect-ip-address). [2]
@@ -429,7 +419,7 @@ In order for this to work a port forwarding from the local machine against Azure
 $ az network bastion tunnel --name bastion-host --resource-group bastion-test-rg --target-resource-id /subscriptions/{subscription-id}/resourceGroups/bastion-test-rg/providers/Microsoft.Compute/virtualMachines/vm-ubn-01 --resource-port 22 --port 52000
 ```
 
-Once the tunnel is established, the console would indicate that it is waiting for incoming connectons:
+Once the tunnel is established, the console would indicate that it is waiting for incoming connections:
 
 ```azurecli
 Command group 'network bastion' is in preview and under development. Reference and support levels: https://aka.ms/CLI_refstatus
@@ -462,7 +452,7 @@ Port forwarding RDP to Bastion is as easy as port forwarding SSH into Linux.
 $ az network bastion tunnel --name bastion-host --resource-group bastion-test-rg --target-resource-id /subscriptions/{subscription-id}/resourceGroups/bastion-test-rg/providers/Microsoft.Compute/virtualMachines/vm-win-01 --resource-port 3389 --port 52000
 ```
 
-Once the tunnel is established, the console would indicate that it is waiting for incoming connectons:
+Once the tunnel is established, the console would indicate that it is waiting for incoming connections:
 
 ```azurecli
 Command group 'network bastion' is in preview and under development. Reference and support levels: https://aka.ms/CLI_refstatus
@@ -522,11 +512,7 @@ resource "azurerm_key_vault_secret" "ssh-key" {
 }
 ```
 
-The corresponding terraform configuration file can be found here: 
-
-- [keyvault.tf](terraform/azure/keyvault.tf)
-
-With these configuraton changes, the deployment can be executed. Once the deployment is done, the following command could be used to create the SSH session against the Ubuntu VM. The command below would download the Private Key from the Key Vault and save it inside the `ssh_key.pem` file before establishing the session. Note that the key file would need to be manually deleted (if desired) after closing the session.
+With these configuration changes, the deployment can be executed. Once the deployment is done, the following command could be used to create the SSH session against the Ubuntu VM. The command below would download the Private Key from the Key Vault and save it inside the `ssh_key.pem` file before establishing the session. Note that the key file would need to be manually deleted (if desired) after closing the session.
 
 ```azurecli
 $ az network bastion ssh --name bastion-host --resource-group bastion-test-rg --target-resource-id /subscriptions/{subscription-id}/resourceGroups/bastion-test-rg/providers/Microsoft.Compute/virtualMachines/vm-ubn-01 --auth-type ssh-key --username ubn-azureuser --ssh-key $(az keyvault secret show --name ubn-ssh-key --vault-name kv-bastion-test-001 --query "value" --output tsv > ssh_key.pem; echo ".\ssh_key.pem")
