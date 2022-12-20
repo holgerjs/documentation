@@ -11,8 +11,8 @@ Objectives:
 
 Provider and Resource Group terraform files are here:
 
-- [provider.tf](provider.tf)
-- [resourcegroup.tf](resourcegroup.tf)
+- [provider.tf](terraform/azure/provider.tf)
+- [resourcegroup.tf](terraform/azure/resourcegroup.tf)
 
 As the very first step, the terraform providers need to be added and the destination resource group needs to be created.
 
@@ -50,7 +50,7 @@ resource "azurerm_resource_group" "rg" {
 
 The terraform files for the networking configuration can be seen here:
 
-- [network.tf](network.tf)
+- [network.tf](terraform/azure/network.tf)
 
 ### Virtual Network
 
@@ -189,9 +189,9 @@ resource "azurerm_subnet_network_security_group_association" "nsg_vm_subnet_asso
 In order to be able to test RDP as well as SSH sessions, one Linux (Ubuntu) and one Windows (Windows Server 2022) are deployed.
 The terraform files for both VMs are:
 
-- [ssh_key.tf](ssh_key.tf)
-- [vm_linux.tf](vm_linux.tf)
-- [vm_windows.tf](vm_windows.tf)
+- [ssh_key.tf](terraform/azure/ssh_key.tf)
+- [vm_linux.tf](terraform/azure/vm_linux.tf)
+- [vm_windows.tf](terraform/azure/vm_windows.tf)
 
 ### Linux Virtual Machine (Ubuntu)
 
@@ -301,7 +301,7 @@ resource "azurerm_windows_virtual_machine" "vm-win-01" {
 
 As the very last step, Azure Bastion can be deployed. The terraform file can be found her:
 
-- [bastion.tf](bastion.tf)
+- [bastion.tf](terraform/azure/bastion.tf)
  
 For testing purposes the `Standard` SKU is used so that tunneling capabilities for using native clients are provided. The core capability of this SKU is the ability to scale up to 50 scale units - however, for this testing scenario, this is not relevant and only the minimum of 2 scale units should be configured.
 Other than that, Azure Bastion requires a Public IP address against which the Azure Portal will connect incoming requests. For a full diagram of the connectivity flow for Azure Bastion, see the [Azure Bastion Networking documentation](https://learn.microsoft.com/en-gb/azure/bastion/connect-ip-address). [2]
