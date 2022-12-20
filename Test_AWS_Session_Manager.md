@@ -231,7 +231,7 @@ resource "aws_vpc_endpoint" "s3_gateway_endpoint" {
 }
 ```
 
-This concludes the networking part. The full terraform configuration can be found within the [network.tf](network.tf) file.
+This concludes the networking part. The full terraform configuration can be found within the [network.tf](terraform/aws/network.tf) file.
 
 ## Creating EC2 Instances for Testing
 
@@ -241,8 +241,8 @@ For testing purposes one Windows and one Linux instance will be deployed so that
 
 The terrarform files for both instances are:
 
-- [ec2-linux-instance.tf](ec2-linux-instance.tf)
-- [ec2-windows-instance.tf](ec2-windows-instance.tf)
+- [ec2-linux-instance.tf](terraform/aws/ec2-linux-instance.tf)
+- [ec2-windows-instance.tf](terraform/aws/ec2-windows-instance.tf)
 
 ### Linux EC2 Instance
 
