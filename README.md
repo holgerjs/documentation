@@ -1,4 +1,4 @@
-# Jumphosts
+# documentation
 
 This repository contains documents that were created only for learning and testing:
 
