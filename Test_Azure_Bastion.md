@@ -477,7 +477,7 @@ Now, the RDP client can be opened and pointed to `localhost:52000`. Upon enterin
 
 Storing the private key inside an Azure Key Vault requires a little bit of additional configuration:
 - A Key Vault needs to be created
-- Permissions need to be assigned against the Data Plane (i.E. Key Vault Secrets Office)
+- Permissions need to be assigned against the Data Plane (i.E. [Key Vault Secrets Officer](https://learn.microsoft.com/en-us/azure/key-vault/general/rbac-guide)) [4]
 - The key needs to be uploaded to the Key Vault
 
 ### Key Vault Terraform Configuration
