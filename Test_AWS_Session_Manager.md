@@ -12,10 +12,13 @@ The terraform code snippets can be used to deploy the following resources:
 - 1 Security Group
 - 2 EC2 Instances for testing AWS Session Manager (1 Windows- and 1 Linux-Instance)
 
+Although a public subnet is part of the configuration, an internet gateway is _not_ part of the test deployment. This is on purpose since the objective is to allow only internal traffic anyways.
 
 ## Creating the VPC
 
 As a first step, the VPC needs to be created. For the steps in this document, this will be done in the eu-central-1 region and for simplicity reasons the subnets are only spread across a single availability zone (eu-central-1a). Please see here for a [list of AWS Regions and Zones](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) and how to query them [1]. 
+
+From a VPC perspective, these resources would need to be deployed first.
 
 ![Stage 1](images/stage_1.png)
 
@@ -228,7 +231,7 @@ resource "aws_vpc_endpoint" "s3_gateway_endpoint" {
 }
 ```
 
-This finishes the networking part. The full terraform configuration can be found within the [network.tf](network.tf) file.
+This concludes the networking part. The full terraform configuration can be found within the [network.tf](network.tf) file.
 
 ## Creating EC2 Instances for Testing
 
