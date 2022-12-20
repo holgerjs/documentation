@@ -7,6 +7,9 @@ Objectives:
 - restrict inbound and outbound network traffic as much as possible, and
 - use native clients.
 
+Extra:
+- Store private key inside a key vault
+
 ## Prepare the Provider and Create the Resource Group
 
 Provider and Resource Group terraform files are here:
@@ -470,10 +473,105 @@ Ctrl + C to close
 
 Now, the RDP client can be opened and pointed to `localhost:52000`. Upon entering the Windows user credentials, the RDP session would be successfully established.
 
+## Extra: Store Private Key for Linux inside an Azure KeyVault
+
+Storing the private key inside an Azure Key Vault requires a little bit of additional configuration:
+- A Key Vault needs to be created
+- Permissions need to be assigned against the Data Plane (i.E. Key Vault Secrets Office)
+- The key needs to be uploaded to the Key Vault
+
+### Key Vault Terraform Configuration
+
+First of all, the current client config needs to be added to the terraform configuration so that the user who is executing the script can have the Key Vault Secrets Officer role assigned conveniently during running the terraform configuration. This has been added to the [provider.tf](terraform/azure/provider.tf) file.
+
+```terraform
+data "azurerm_client_config" "current" {}
+```
+
+The Azure Key Vault itself can then be added through the following code:
+
+```terraform
+resource "azurerm_key_vault" "kv" {
+  name                = "kv-bastion-test-001"
+  resource_group_name = azurerm_resource_group.rg.name
+  tenant_id           = data.azurerm_client_config.current.tenant_id
+  location            = azurerm_resource_group.rg.location
+  sku_name            = "standard"
+
+  purge_protection_enabled  = false
+  enable_rbac_authorization = true
+}
+
+resource "azurerm_role_assignment" "kv_secrets_officer" {
+  scope                = azurerm_key_vault.kv.id
+  role_definition_name = "Key Vault Secrets Officer"
+  principal_id         = data.azurerm_client_config.current.object_id
+}
+
+resource "azurerm_key_vault_secret" "ssh-key" {
+  name         = "ubn-ssh-key"
+  value        = tls_private_key.ubn_ssh.private_key_pem
+  key_vault_id = azurerm_key_vault.kv.id
+  tags = {
+    vm = azurerm_linux_virtual_machine.vm_ubn_01.name
+  }
+
+  depends_on = [
+    azurerm_role_assignment.kv_secrets_officer
+  ]
+}
+```
+
+The corresponding terraform configuration file can be found here: 
+
+- [keyvault.tf](terraform/azure/keyvault.tf)
+
+With these configuraton changes, the deployment can be executed. Once the deployment is done, the following command could be used to create the SSH session against the Ubuntu VM. The command below would download the Private Key from the Key Vault and save it inside the `ssh_key.pem` file before establishing the session. Note that the key file would need to be manually deleted (if desired) after closing the session.
+
+```azurecli
+$ az network bastion ssh --name bastion-host --resource-group bastion-test-rg --target-resource-id /subscriptions/{subscription-id}/resourceGroups/bastion-test-rg/providers/Microsoft.Compute/virtualMachines/vm-ubn-01 --auth-type ssh-key --username ubn-azureuser --ssh-key $(az keyvault secret show --name ubn-ssh-key --vault-name kv-bastion-test-001 --query "value" --output tsv > ssh_key.pem; echo ".\ssh_key.pem")
+
+
+Command group 'network bastion' is in preview and under development. Reference and support levels: https://aka.ms/CLI_refstatus
+Welcome to Ubuntu 18.04.6 LTS (GNU/Linux 5.4.0-1098-azure x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Tue Dec 20 14:02:24 UTC 2022
+
+  System load:  0.1               Processes:           105
+  Usage of /:   4.4% of 28.89GB   Users logged in:     0
+  Memory usage: 5%                IP address for eth0: 10.40.2.133
+  Swap usage:   0%
+
+0 updates can be applied immediately.
+
+
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+ubn-azureuser@vm-ubn-01:~$
+```
+
+## Cleanup
+
+Once done with testing, above resources could be removed by running `terraform destroy`.
+
 ## References
 
-| # | Title | URL |
-| --- | --- | --- |
-| 1 | Azure Bastion Subnet | https://learn.microsoft.com/en-us/azure/bastion/configuration-settings#subnet |
-| 2 | Connect to a VM via specified private IP address through the portal | https://learn.microsoft.com/en-gb/azure/bastion/connect-ip-address |
-| 3 | What is IP address 168.63.129.16? | https://learn.microsoft.com/en-us/azure/virtual-network/what-is-ip-address-168-63-129-16
+| # | Title | URL | Accessed On |
+| --- | --- | --- | --- |
+| 1 | Azure Bastion Subnet | https://learn.microsoft.com/en-us/azure/bastion/configuration-settings#subnet | 2022-12-19 |
+| 2 | Connect to a VM via specified private IP address through the portal | https://learn.microsoft.com/en-gb/azure/bastion/connect-ip-address | 2022-12-19 |
+| 3 | What is IP address 168.63.129.16? | https://learn.microsoft.com/en-us/azure/virtual-network/what-is-ip-address-168-63-129-16 | 2022-12-19 |
+| 4 | Azure built-in roles for Key Vault data plane operations | https://learn.microsoft.com/en-us/azure/key-vault/general/rbac-guide | 2022-12-19 |
