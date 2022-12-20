@@ -1,13 +1,21 @@
-# Testing AWS Session Manager with VPC Endpoints
+## Objective: Testing AWS Session Manager with VPC Endpoints
 
 Based on the AWS documentation, AWS Session Manager can be used to establish interactive sessions against EC2 instances that are fully private - without any outbound or inbound internet traffic required or even allowed.
 In order for this to work VPC Interface Endpoints for AWS Systems Manager Session Manager are required, since the AWS Systems Manager agents need to communicate with AWS Systems Manager.
 
-The steps in this document can be used to test AWS Systems Manager Session Manager functionality through VPC Endpoints using a simple setup through terraform.
+**The steps in this document can be used to test AWS Systems Manager Session Manager functionality through VPC Endpoints using a simple setup based on terraform. The code samples are solely for testing and learning purposes and should not be used in production environments.**
+
+The terraform code snippets can be used to deploy the following resources:
+
+- 1 VPC, including one public and one private subnet, one route table and the corresponding subnet associations.
+- 5 VPC Endpoints (4 Interface Endpoints, 1 Gateway Endpoint)
+- 1 Security Group
+- 2 EC2 Instances for testing AWS Session Manager (1 Windows- and 1 Linux-Instance)
+
 
 ## Creating the VPC
 
-First, the VPC needs to be created. For the steps in this document, this will be done in the eu-central-1 region and for simplicity reasons the subnets are only spread across a single availability zone (eu-central-1a). Please see here for a [list of AWS Regions and Zones](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) and how to query them [1]. 
+As a first step, the VPC needs to be created. For the steps in this document, this will be done in the eu-central-1 region and for simplicity reasons the subnets are only spread across a single availability zone (eu-central-1a). Please see here for a [list of AWS Regions and Zones](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) and how to query them [1]. 
 
 ![Stage 1](images/stage_1.png)
 
@@ -22,7 +30,7 @@ resource "aws_vpc" "main_vpc" {
     enable_dns_support = true
     tags = {
         Name = "main-vpc"
-        owner = "hjs"
+        owner = "me"
     }
 }
 
@@ -33,7 +41,7 @@ resource "aws_subnet" "main_public_subnet" {
     cidr_block = "10.40.2.0/25"
     tags = {
         Name = "public-subnet-eu-central-1a"
-        owner = "hjs"
+        owner = "me"
     }
 }
 
@@ -43,7 +51,7 @@ resource "aws_subnet" "main_private_subnet" {
     cidr_block = "10.40.2.128/25"
     tags = {
         Name = "private-subnet-eu-central-1a"
-        owner = "hjs"
+        owner = "me"
     }
 }
 
@@ -52,7 +60,7 @@ resource "aws_route_table" "main_public_rt" {
     vpc_id = aws_vpc.main_vpc.id
     tags = {
         Name = "public-rt"
-        owner = "hjs"
+        owner = "me"
     }
 }
 
@@ -60,7 +68,7 @@ resource "aws_route_table" "main_private_rt" {
     vpc_id = aws_vpc.main_vpc.id
     tags = {
         Name = "private-rt"
-        owner = "hjs"
+        owner = "me"
     }
 }
 
@@ -122,7 +130,7 @@ resource "aws_security_group" "allow_tls_inside_vpc" {
 
     tags = {
         Name = "allow_tls"
-        owner = "hjs"
+        owner = "me"
     }
 }
 ```
@@ -146,7 +154,7 @@ resource "aws_vpc_endpoint" "ssm_interface_endpoint" {
     ]
 
     tags = {
-        owner = "hjs"
+        owner = "me"
     }
 }
 
@@ -165,7 +173,7 @@ resource "aws_vpc_endpoint" "ec2messages_interface_endpoint" {
     ]
     
     tags = {
-        owner = "hjs"
+        owner = "me"
     }
 }
 
@@ -184,7 +192,7 @@ resource "aws_vpc_endpoint" "ec2_interface_endpoint" {
     ]
 
     tags = {
-        owner = "hjs"
+        owner = "me"
     }
 }
 
@@ -203,7 +211,7 @@ resource "aws_vpc_endpoint" "ssmmessages_interface_endpoint" {
     ]
     
     tags = {
-        owner = "hjs"
+        owner = "me"
     }
 }
 
@@ -215,7 +223,7 @@ resource "aws_vpc_endpoint" "s3_gateway_endpoint" {
     vpc_endpoint_type = "Gateway"
 
     tags = {
-        owner = "hjs"
+        owner = "me"
     }
 }
 ```
@@ -249,7 +257,7 @@ resource "aws_network_interface" "ubuntu-nic" {
 
     tags = {
       Name = "ubuntu-primary-nic"
-      owner = "hjs"
+      owner = "me"
     }
 }
 
@@ -267,7 +275,7 @@ resource "aws_instance" "ubuntu_linux" {
     tags = {
         Name = "test-ubn-01"
         OS = "Ubuntu16.04LTS"
-        owner = "hjs"
+        owner = "me"
     }
 }
 ```
@@ -286,7 +294,7 @@ resource "aws_network_interface" "win2022-nic" {
 
     tags = {
       Name = "win2022-primary-nic"
-      owner = "hjs"
+      owner = "me"
     }
 }
 
@@ -304,7 +312,7 @@ resource "aws_instance" "windows-2022" {
     tags = {
         Name = "test-win-01"
         OS = "WindowsServer2022"
-        owner = "hjs"
+        owner = "me"
     }
 }
 ```
