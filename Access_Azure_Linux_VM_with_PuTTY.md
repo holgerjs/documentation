@@ -1,15 +1,18 @@
-# Use PuTTY to access an Azure Linux VM through Bastion
+# How to use PuTTY to access an Azure Linux VM through Bastion
 
 ## Summary
 
 I was testing Azure Bastion and wanted to deploy a test environment through terraform. The steps below were performed to create a Linux VM for testing and accessing it through PuTTY.  
 
-- use terraform to deploye the Linux VM and create the corresponding SSH key.
-- use terraform output to create the corresponding PEM file.
-- use puttygen to convert the PEM file to PPK format.
-- use th Azure CLI to create a port forwarding from the local machine to Azure Bastion.
+- use terraform to deploy the Linux VM and create the corresponding SSH key.
+- use `terraform output` to create the corresponding PEM file.
+- use PuTTYgen to convert the PEM file to PPK format.
+- use the Azure CLI to create a port forwarding from the local machine to Azure Bastion.
 - use PuTTY to connect to the Azure Linux VM.
 
+**The code samples and information provided within this document are solely for testing and learning purposes and should not be used in production environments.**
+
+**Once testing is finished, the corresponding resources that were deployed throughout the testing should be removed in order to avoid costs.**
 
 ## Deploy
 
@@ -62,7 +65,7 @@ resource "azurerm_linux_virtual_machine" "vm_ubn_01" {
 
 ## Extract Private Key
 
-Note that the key will be part of the state file in raedable text. Since it is printed in one line, includes line breaks and is therefore difficult to extract manually, we could use a terraform [`output`](https://stackoverflow.com/questions/49743220/how-do-i-create-an-ssh-key-in-terraform) for extracting the key. [2]
+Note that the key will be part of the state file in readible text. Since it is printed in one line, includes line breaks and is therefore difficult to extract manually, we could use a terraform [`output`](https://stackoverflow.com/questions/49743220/how-do-i-create-an-ssh-key-in-terraform) for extracting the key. [2]
 
 ```terraform
 output "tls_private_key" {
@@ -79,7 +82,7 @@ $ terraform output -raw tls_private_key > ubn_private_key.pem
 
 ## Convert PEM to PPK
 
-In order to be able to use the key with PuTTY, we will need to convert it into the PPK format using [PuTTYgen](https://the.earth.li/~sgtatham/putty/0.78/htmldoc/Chapter8.html#pubkey-puttygen). [3] Unfortunately there does not seem to be a way to do this via the commandline on Windows. The linux version of puttygen includes the corresponding options though, which is why there are a limited options: [Maybe use WinSCP](https://superuser.com/questions/912304/how-do-you-convert-an-ssh-private-key-to-a-ppk-on-the-windows-command-line), stick to the PuTTYgen graphical user interface or use WSL (and therefore Linux). [4]
+In order to be able to use the key with PuTTY, we will need to convert it into the PPK format using [PuTTYgen](https://the.earth.li/~sgtatham/putty/0.78/htmldoc/Chapter8.html#pubkey-puttygen). [3] Unfortunately there does not seem to be a way to do this via the command line on Windows. The Linux version of PuTTYgen includes the corresponding options though, which is why there are a limited options: [Maybe use WinSCP](https://superuser.com/questions/912304/how-do-you-convert-an-ssh-private-key-to-a-ppk-on-the-windows-command-line), stick to the PuTTYgen graphical user interface or use WSL (and therefore Linux). [4]
 
 Using the GUI, the conversion could work like this:
 
@@ -122,7 +125,7 @@ Now, we can open the connection and will be asked for the passphrase for the pri
 
 ![Connect through PuTTY](images/putty_03.png)
 
-Once that is done, the conection will be authenticated.
+Once that is done, the connection will be authenticated.
 
 ![Connect through PuTTY](images/putty_04.png)
 

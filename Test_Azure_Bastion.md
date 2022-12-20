@@ -6,6 +6,8 @@ The steps in this document can be used to create a test environment for Azure Ba
 
 **The code samples are solely for testing and learning purposes and should not be used in production environments.**
 
+**Once testing is finished, the corresponding resources that were deployed throughout the testing should be removed in order to avoid costs.**
+
 Objectives:
 
 - restrict inbound and outbound network traffic as much as possible, and

@@ -5,6 +5,8 @@ In order for this to work VPC Interface Endpoints for AWS Systems Manager Sessio
 
 **The steps in this document can be used to test AWS Systems Manager Session Manager functionality through VPC Endpoints using a simple setup based on terraform. The code samples are solely for testing and learning purposes and should not be used in production environments.**
 
+**Once testing is finished, the corresponding resources that were deployed throughout the testing should be removed in order to avoid costs.**
+
 The terraform code snippets can be used to deploy the following resources:
 
 - 1 VPC, including one public and one private subnet, one route table and the corresponding subnet associations.

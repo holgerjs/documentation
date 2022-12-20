@@ -1,12 +1,12 @@
 # Jumphost Comparison
 
-Jumphosts are useful for securely accessing hosts on private networks or individually secured network segments - however, AWS and Azure are offering such services as platform services (PaaS) where the responsibility for managing the underlying infrastructure remains with the Cloud vendor, allowing customers to further reduce their IaaS footprint. This document includes _some_ details about (and an attempted comparison between) the different offerings. Note that this is not an exhaustive description, there may be errors and/or some details may be missing or have changed in the meantime. Review the official documentation for full and up-to-date details - Links are provided in the References section.
+Jumphosts are useful for securely accessing hosts on private networks or individually secured network segments - however, AWS and Azure are offering such services as platform services (PaaS) where the responsibility for managing the underlying infrastructure remains with the Cloud vendor, allowing customers to further reduce their IaaS footprint. This document includes _some_ details about (and an attempted comparison between) the different offerings. Note that this is not an exhaustive description, there may be errors and/or some details may be missing or have changed in the meantime. Review the official documentation for full and up-to-date details - some links are provided in the References section.
 
 ## Offerings
 
 | # | Hyperscaler | Offering |
 |---| --- | --- |
-| 1 | GCP | GCP does not seem to have an offering for a managed Bastion Server. Steps on creating a Bastion host for the Google Cloud Platform are outlined [here](https://cloud.google.com/solutions/connecting-securely#bastion)
+| 1 | GCP | GCP does not seem to have an offering for a managed Bastion Server. Steps for creating a Bastion host for the Google Cloud Platform are outlined [here](https://cloud.google.com/solutions/connecting-securely#bastion)
 | 2 | AWS | [AWS Systems Manager Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html)
 | 3 | Azure | [Azure Bastion](https://learn.microsoft.com/en-us/azure/bastion/bastion-overview)
 
@@ -117,7 +117,7 @@ Charges are based on a combination of the componets below. See the [Azure Bastio
 | Can be accessed through Private Endpoints? | not required | Yes (AWS PrivateLink) | No |
 | Subnet Requirements               | Minimum /29              |None (unless AWS PrivateLink is used)                          | Minimum /26   |
 | Network Access Requirements | Allow Inbound RDP/SSH traffic from client network | None | Allow Inbound RDP/SSH traffic from Azure Bastion Subnet |
-| UDR Support                       | Yes               | No                                    |  No            |
+| UDR Support                       | Yes               | n/a                                    |  No            |
 | Agent required                    | No                | Yes                                 | No |
 | Authentication Requirements | Azure RBAC: <ul><li>None</li></ul>VM:<ul><li>Local or Domain User Credentials which are member of the Remote Desktop Users Group (for Windows OS)</li></ul> | AWS IAM: <ul><li>Session Manager permissions</li> <li>Permissions to connect to the appropriate instances.</li>  </li></ul>VM:<ul><li>Local or Domain User Credentials which are member of the Remote Desktop Users Group (for Windows OS)</li></ul>       |Azure RBAC: <ul><li>Reader role on the virtual machine.</li> <li>Reader role on the NIC with private IP of the virtual machine.</li> <li>Reader role on the Azure Bastion resource.</li> <li>Reader Role on the virtual network of the target virtual machine (if the Bastion deployment is in a peered virtual network).</li></ul>VM:<ul><li>Local or Domain User Credentials which are member of the Remote Desktop Users Group (for Windows OS)</li></ul> |
 | Connection Limits | 2 RDP Connections (unless Terminal Services are deployed and RDS licenses are used)   | None |  Each [instance](https://learn.microsoft.com/en-us/azure/bastion/configuration-settings#instance) can support 25 concurrent RDP connections and 50 concurrent SSH connections for medium workloads |
