@@ -113,7 +113,7 @@ Charges are based on a combination of the componets below. See the [Azure Bastio
 |---                |---	                                                    |---	                              | ---             |
 | Service Model     | IaaS	                                                    | PaaS                                | PaaS            |
 | Exposure       	| Internal or External                                      | External                | External          |
-| Pricing           | Charges apply for Compute, Storage and Network Traffic    | Network egress traffic is charged as well as access to non-EC2 nodes (advanced access tiers).           | Charged on an hourly basis per instance and for network traffic    	            |
+| Pricing           | Charges apply for Compute, Storage and Network Traffic    | Network egress traffic is charged as well as access to non-EC2 nodes (advanced access tiers).           | Charged on an hourly basis per instance and for network egress traffic    	            |
 | Can be accessed through Private Endpoints? | not required | Yes (AWS PrivateLink) | No |
 | Subnet Requirements               | Minimum /29              |None (unless AWS PrivateLink is used)                          | Minimum /26   |
 | Network Access Requirements | Allow Inbound RDP/SSH traffic from client network | None | Allow Inbound RDP/SSH traffic from Azure Bastion Subnet |
