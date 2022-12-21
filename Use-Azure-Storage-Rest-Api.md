@@ -1,8 +1,10 @@
-# Azure Storage REST API
+# Example for using the Azure Storage REST API
 
-This example shows how to use the Azure Storage REST API in order to work with containers and blobs for an Azure Storage Account.
+This example shows how to use the Azure Storage REST API in order to work with containers and blobs with an Azure Storage Account.
 
 ## Assumptions
+
+Before we start, let's check the following assumptions and make sure they are in place for the testing.
 
 - Service Principal is created
 - Application ID is known
@@ -12,9 +14,9 @@ This example shows how to use the Azure Storage REST API in order to work with c
 
 ## Acquire an Azure AD Token
 
-First thing is we need to acquire a token from Azure AD.
+At first, we would need to acquire a token from Azure AD.
 
-```azurepowershell
+```powershell
 $requestMethod  = 'POST'
 $requestHeaders = @{
     'Content-Type'  = 'application/x-www-form-urlencoded'
@@ -35,7 +37,7 @@ $request = Invoke-RestMethod -Method $requestMethod `
 
 The `$request` variable will then hold the relevant token information.
 
-```azurepowershell
+```powershell
 $request
 
 token_type expires_in ext_expires_in access_token
@@ -49,7 +51,7 @@ This will be used for the `Authentication` header in subsequent requests. Please
 
 Using the token we can now create a container (for example).
 
-```azurepowershell
+```powershell
 $containerName      = 'mycontainer'
 $requestUri         = 'https://STORAGEACCOUNTNAME.blob.core.windows.net/'+$containerName+'?restype=container'
 $requestMethod      = 'PUT'
@@ -67,7 +69,7 @@ Invoke-RestMethod -Method $requestMethod -Headers $requestHeaders -Uri $requestU
 
 If all went well we should now be able to see the newly created container in the list.
 
-```azurepowershell
+```powershell
 $requestUri         = 'https://STORAGEACCOUNTNAME.blob.core.windows.net?restype=container&comp=list'
 $requestMethod      = 'GET'
 $requestHeaders     = @{
@@ -87,7 +89,7 @@ $return.EnumerationResults.Containers
 
 ## Create Blob
 
-```azurepowershell
+```powershell
 $containerName      = 'mycontainer'
 $blobName           = 'anotherblob.txt'
 $requestUri         = 'https://STORAGEACCOUNTNAME.blob.core.windows.net/'+$containerName+'/'+$blobName
@@ -108,9 +110,9 @@ Invoke-RestMethod -Method $requestMethod -Headers $requestHeaders -Uri $requestU
 
 ## List Blobs
 
-Listing the blobs is then pretty similar to listing containers. You get the idea.
+Listing the blobs is then pretty similar to listing containers.
 
-```azurepowershell
+```powershell
 $containerName      = 'mycontainer'
 $requestUri         = 'https://STORAGEACCOUNTNAME.blob.core.windows.net/'+$containerName+'?restype=container&comp=list'
 $requestMethod      = 'GET'
