@@ -1,6 +1,6 @@
 ## Enabling 'Soft Delete' for Blobs in Azure Storage Accounts using Terraform
 
-### What is Soft Delete?
+### What is Blob Soft Delete?
 
 > Blob soft delete protects an individual blob, snapshot, or version from accidental deletes or overwrites by maintaining the deleted data in the system for a specified period of time. During the retention period, you can restore a soft-deleted object to its state at the time it was deleted. After the retention period has expired, the object is permanently deleted.
 <br>&mdash; <cite>[Azure Documentation - Soft delete for blobs](https://learn.microsoft.com/en-us/azure/storage/blobs/soft-delete-blob-overview) </cite>[1]
