@@ -8,5 +8,6 @@ This repository contains documents that were created only for learning and testi
 - [How to use PuTTY to access an Azure Linux VM through Azure Bastion](Access_Azure_Linux_VM_with_PuTTY.md)
 * [PowerShell: Retrieve an OAuth2 Token for an Azure SPN through PowerShell](Pwsh_Get_Oauth2_Token.md)
 * [PowerShell: Use Azure Storage REST API](Use-Azure-Storage-Rest-Api.md)
+* [Enabling 'Soft Delete' for Blobs in Azure Storage Accounts using Terraform](Azure_Storageaccount_enable_soft_delete_through_tf.md)
 
 None of the contents from this repository must be used in production environments.

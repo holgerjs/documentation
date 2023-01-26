@@ -13,7 +13,7 @@ Besides enabling Blob soft delete, Microsoft recommends enabling further data pr
 
 The Azure Portal has the settings under `Data Protection -> Enable soft delete for blobs`.
 
-![Azure Portal Blob Soft Delete Settings]()
+![Azure Portal Blob Soft Delete Settings](images/storage_account_soft_delete_enabled_02.png)
 
 However, the [Azure Storage Account REST API](https://learn.microsoft.com/en-us/rest/api/storageservices/set-blob-service-properties?tabs=azure-ad) has the same configuration as `DeleteRetentionPolicy` [4] and terraform uses a similar wording with `delete_retention_policy` with their [azurerm_storage_account](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_account) resource [5].
 
@@ -89,7 +89,7 @@ Above configuration would create a resource group and storage account with a ran
 
 Once applied, the setting should be reflected in the Azure Portal as well.
 
-![Azure Portal - Soft Delete]()
+![Azure Portal - Soft Delete](images/storage_account_soft_delete_enabled_01.png)
 
 ### References
 
