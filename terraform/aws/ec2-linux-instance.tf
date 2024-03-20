@@ -12,7 +12,7 @@ resource "aws_network_interface" "ubuntu-nic" {
 }
 
 resource "aws_instance" "ubuntu_linux" {
-    ami = "ami-09042b2f6d07d164a"
+    ami = "ami-039e31dd8219f99f7"
     instance_type = "t2.micro"
     iam_instance_profile = "AmazonSSMRoleForInstancesQuickSetup"
 
