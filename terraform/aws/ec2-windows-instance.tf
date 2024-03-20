@@ -12,7 +12,7 @@ resource "aws_network_interface" "win2022-nic" {
 }
 
 resource "aws_instance" "windows-2022" {
-    ami = "ami-05a60358d5cda31c5"
+    ami = "ami-0e9ea35223a924666"
     instance_type = "t2.medium"
     iam_instance_profile = "AmazonSSMRoleForInstancesQuickSetup"
 
